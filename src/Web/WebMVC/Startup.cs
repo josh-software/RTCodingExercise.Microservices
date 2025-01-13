@@ -1,5 +1,7 @@
-﻿using MassTransit;
+﻿using Contracts.Plates;
+using MassTransit;
 using RabbitMQ.Client;
+using WebMVC.Services;
 
 namespace WebMVC.WebMVC
 {
@@ -21,9 +23,10 @@ namespace WebMVC.WebMVC
 
             services.AddMassTransit(x =>
             {
-                //x.AddConsumer<ConsumerClass>();
+                //Add request client
+                x.AddRequestClient<GetPlatesRequest>();
 
-                //ADD CONSUMERS HERE
+                //Rabbit Configuration
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.Host(Configuration["EventBusConnection"], "/", h =>
@@ -45,6 +48,10 @@ namespace WebMVC.WebMVC
             });
 
             services.AddMassTransitHostedService();
+
+
+            // Add application services
+            services.AddScoped<HomeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

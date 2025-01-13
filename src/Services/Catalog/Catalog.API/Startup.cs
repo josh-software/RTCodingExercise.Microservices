@@ -1,4 +1,7 @@
-﻿using MassTransit;
+﻿using Catalog.API.Consumers;
+using Catalog.API.Repositories;
+using Catalog.Domain.Interfaces;
+using MassTransit;
 using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
 
@@ -52,9 +55,10 @@ namespace Catalog.API
 
             services.AddMassTransit(x =>
             {
-                //x.AddConsumer<ConsumerClass>();
+                //Add consumers here
+                x.AddConsumer<GetPlatesConsumer>();
 
-                //ADD CONSUMERS HERE
+                //Rabbit Configuration
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.Host(Configuration["EventBusConnection"], "/", h =>
@@ -76,6 +80,9 @@ namespace Catalog.API
             });
 
             services.AddMassTransitHostedService();
+
+            // Add application services
+            services.AddScoped<IPlateRepository, PlateRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -110,7 +117,7 @@ namespace Catalog.API
             app.UseSwagger()
                 .UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Catalog.API V1");
+                    c.SwaggerEndpoint($"{(!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty)}/swagger/v1/swagger.json", "Catalog.API V1");
                 });
 
             app.UseRouting();
