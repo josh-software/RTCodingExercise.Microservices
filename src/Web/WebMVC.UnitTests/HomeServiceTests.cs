@@ -1,0 +1,65 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Contracts.Plates;
+using DTOs;
+using DTOs.Common;
+using MassTransit;
+using Moq;
+using WebMVC.Services;
+using Xunit;
+
+namespace WebMVC.UnitTests.Services
+{
+    public class HomeServiceTests
+    {
+        private readonly Mock<IRequestClient<GetPlatesRequest>> _mockClient;
+        private readonly HomeService _homeService;
+
+        public HomeServiceTests()
+        {
+            _mockClient = new Mock<IRequestClient<GetPlatesRequest>>();
+            _homeService = new HomeService(_mockClient.Object);
+        }
+
+        [Fact]
+        public async Task GetPlatesAsync_ReturnsPaginatedResponse()
+        {
+            // Arrange
+            const int pageNumber = 1;
+            const int pageSize = 10;
+            var expectedPlates = new List<PlateDto>
+            {
+                new PlateDto { Id = Guid.NewGuid(), Registration = "Plate1", PurchasePrice = 0, SalePrice = 1 }
+            };
+            var paginatedResponse = new PaginatedDto<PlateDto>
+            {
+                Limit = pageSize,
+                Offset = (pageNumber - 1) * pageSize,
+                Total = 1,
+                Items = expectedPlates
+            };
+
+            var platesResponse = new GetPlatesResponse { Response = paginatedResponse };
+            var responseMock = new Mock<Response<GetPlatesResponse>>();
+            responseMock.Setup(r => r.Message).Returns(platesResponse);
+
+            _mockClient
+                .Setup(c => c.GetResponse<GetPlatesResponse>(It.IsAny<GetPlatesRequest>(), default, default))
+                .ReturnsAsync(responseMock.Object);
+
+            // Act
+            var result = await _homeService.GetPlatesAsync(pageNumber, pageSize);
+
+            // Assert
+            Assert.NotNull(result);
+            var resultItem = result.Items.FirstOrDefault();
+            Assert.NotNull(resultItem);
+            Assert.Equal(expectedPlates.Count(), result.Items.Count());
+            Assert.Equal(expectedPlates[0].Id, result.Items.First().Id);
+            Assert.Equal(expectedPlates[0].Registration, result.Items.First().Registration);
+            Assert.Equal(paginatedResponse.Total, result.TotalCount);
+        }
+    }
+}

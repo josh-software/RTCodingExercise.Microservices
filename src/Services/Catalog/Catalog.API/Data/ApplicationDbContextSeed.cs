@@ -42,12 +42,12 @@ namespace Catalog.API.Data
             }
         }
 
-        public List<Plate> ReadApplicationRoleFromJson(string contentRootPath, ILogger<ApplicationDbContextSeed> logger)
+        public List<PlateEntity> ReadApplicationRoleFromJson(string contentRootPath, ILogger<ApplicationDbContextSeed> logger)
         {
             string filePath = Path.Combine(contentRootPath, "Setup", "plates.json");
             string json = File.ReadAllText(filePath);
 
-            var plates = JsonConvert.DeserializeObject<List<Plate>>(json) ?? new List<Plate>();
+            var plates = JsonConvert.DeserializeObject<List<PlateEntity>>(json) ?? new List<PlateEntity>();
 
             return plates;
         }
