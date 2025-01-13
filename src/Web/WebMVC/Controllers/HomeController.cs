@@ -1,7 +1,7 @@
-﻿using RTCodingExercise.Microservices.Models;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using WebMVC.Models;
 
-namespace RTCodingExercise.Microservices.Controllers
+namespace WebMVC.Controllers
 {
     public class HomeController : Controller
     {

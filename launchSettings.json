@@ -1,0 +1,17 @@
+{
+  "profiles": {
+    "Start All": {
+      "commandName": "DockerCompose",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "webmvc",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "rabbitmq": "StartWithoutDebugging",
+        "sqldata": "StartWithoutDebugging",
+        "catalog-api": "StartDebugging",
+        "webmvc": "StartDebugging"
+      }
+    }
+  }
+}

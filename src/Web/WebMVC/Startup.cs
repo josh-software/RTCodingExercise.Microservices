@@ -1,7 +1,7 @@
 ﻿using MassTransit;
 using RabbitMQ.Client;
 
-namespace RTCodingExercise.WebMVC
+namespace WebMVC.WebMVC
 {
     public class Startup
     {
