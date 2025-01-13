@@ -16,11 +16,11 @@ namespace Catalog.API.Consumers
             _plateRepository = plateRepository;
         }
 
-        public async Task Consume(ConsumeContext<GetPlatesRequest> comsumer)
+        public async Task Consume(ConsumeContext<GetPlatesRequest> consumer)
         {
             // Check for limit and offset
-            var limit = comsumer.Message.Limit;
-            var offset = comsumer.Message.Offset;
+            var limit = consumer.Message.Limit;
+            var offset = consumer.Message.Offset;
 
             // Fetch plates
             var page = await _plateRepository.GetPaginatedAsync(limit, offset);
@@ -35,7 +35,7 @@ namespace Catalog.API.Consumers
             };
 
             // Respond with the data
-            await comsumer.RespondAsync(new GetPlatesResponse
+            await consumer.RespondAsync(new GetPlatesResponse
             {
                 Response = response
             });
