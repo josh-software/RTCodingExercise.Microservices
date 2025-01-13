@@ -35,7 +35,7 @@ namespace Catalog.API.Repositories
         {
             if (Limit < 0 || Offset < 0)
             {
-                throw new ArgumentException("Limit and Offset must be greater than 0");
+                throw new ArgumentException("Limit and Offset must be non-negative");
             }
 
             // Execute tasks sequentially to avoid DbContext concurrency issues
