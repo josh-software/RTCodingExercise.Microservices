@@ -1,4 +1,4 @@
-namespace RTCodingExercise.Microservices.Models
+namespace WebMVC.Models
 {
     public class ErrorViewModel
     {
