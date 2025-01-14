@@ -1,8 +1,8 @@
 ﻿using Contracts.Plates;
 using DTOs;
+using DTOs.Common;
 using IntegrationEvents.Plates;
 using MassTransit;
-using WebMVC.Models;
 
 namespace WebMVC.Services
 {
@@ -19,16 +19,19 @@ namespace WebMVC.Services
             _getPlatesClient = getPlatesClient;
         }
 
-        public async Task<PaginatedViewModel<PlateDto>> GetPlatesAsync(int pageNumber, int pageSize)
+        public async Task<PaginatedDto<PlateDto>> GetPlatesAsync(
+            int pageNumber, int pageSize, string sortBy, string sortDirection
+        )
         {
             var response = await _getPlatesClient.GetResponse<GetPlatesResponse>(
                 new GetPlatesRequest(
                     pageSize,
-                    (pageNumber - 1) * pageSize
+                    (pageNumber - 1) * pageSize,
+                    sortBy,
+                    sortDirection
                 ));
 
-            var paginatedResponse = PaginatedViewModel<PlateDto>.FromDto(response.Message.Response);
-            return paginatedResponse;
+            return response.Message.Response;
         }
 
         public async Task UpsertPlateAsync(PlateDto plateDto)

@@ -1,4 +1,5 @@
-﻿using Catalog.API.Mappings;
+﻿using System.Linq.Dynamic.Core;
+using Catalog.API.Mappings;
 using Catalog.Domain.Interfaces;
 using DTOs.Common;
 
@@ -64,16 +65,17 @@ namespace Catalog.API.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<PaginatedDto<Plate>> GetAllPaginatedAsync(int Limit, int Offset)
+        public async Task<PaginatedDto<Plate>> GetAllPaginatedAsync(int limit, int offset, string sortBy, string sortDirection)
         {
-            if (Limit < 0 || Offset < 0)
+            if (limit < 0 || offset < 0)
             {
                 throw new ArgumentException("Limit and Offset must be non-negative");
             }
 
             var plates = await _context.Plates
-                .Skip(Offset)
-                .Take(Limit)
+                .OrderBy($"{sortBy} {sortDirection}")
+                .Skip(offset)
+                .Take(limit)
                 .Select(p => p.FromEntity())
                 .ToListAsync();
 
@@ -82,8 +84,8 @@ namespace Catalog.API.Repositories
             return new PaginatedDto<Plate>
             {
                 Items = plates,
-                Limit = Limit,
-                Offset = Offset,
+                Limit = limit,
+                Offset = offset,
                 Total = total
             };
         }

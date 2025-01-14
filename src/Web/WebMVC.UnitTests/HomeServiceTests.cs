@@ -53,7 +53,7 @@ namespace WebMVC.UnitTests.Services
                 .ReturnsAsync(responseMock.Object);
 
             // Act
-            var result = await _homeService.GetPlatesAsync(pageNumber, pageSize);
+            var result = await _homeService.GetPlatesAsync(pageNumber, pageSize, "Id", "Asc");
 
             // Assert
             Assert.NotNull(result);
@@ -62,7 +62,7 @@ namespace WebMVC.UnitTests.Services
             Assert.Equal(expectedPlates.Count(), result.Items.Count());
             Assert.Equal(expectedPlates[0].Id, result.Items.First().Id);
             Assert.Equal(expectedPlates[0].Registration, result.Items.First().Registration);
-            Assert.Equal(paginatedResponse.Total, result.TotalCount);
+            Assert.Equal(paginatedResponse.Total, result.Total);
         }
 
         [Fact]
