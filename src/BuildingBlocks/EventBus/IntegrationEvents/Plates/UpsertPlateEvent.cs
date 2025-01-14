@@ -4,7 +4,7 @@ namespace IntegrationEvents.Plates
 {
     public class UpsertPlateEvent : IntegrationEvent
     {
-        public PlateDto Plate { get; set; }
+        public PlateDto Plate { get; private set; }
 
         public UpsertPlateEvent(PlateDto plate)
         {
