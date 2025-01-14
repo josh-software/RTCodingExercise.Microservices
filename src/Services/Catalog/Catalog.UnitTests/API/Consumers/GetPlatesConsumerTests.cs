@@ -11,7 +11,7 @@ using MassTransit;
 using Moq;
 using Xunit;
 
-namespace Catalog.UnitTests.Consumers
+namespace Catalog.UnitTests.API.Consumers
 {
     public class GetPlatesConsumerTests
     {

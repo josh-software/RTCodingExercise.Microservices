@@ -7,7 +7,7 @@ using Catalog.Domain;
 using DTOs;
 using Xunit;
 
-namespace Catalog.UnitTests.Mappings
+namespace Catalog.UnitTests.API.Mappings
 {
     public class PlateMappingExtensionsTests
     {
