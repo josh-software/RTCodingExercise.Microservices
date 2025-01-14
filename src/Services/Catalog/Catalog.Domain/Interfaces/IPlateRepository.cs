@@ -11,5 +11,6 @@ namespace Catalog.Domain.Interfaces
         Task AddAsync(Plate plate);
         Task UpdateAsync(Plate plate);
         Task DeleteAsync(int id);
+        Task<PaginatedDto<Plate>> GetAllPaginatedAsync(int Limit, int Offset);
     }
 }

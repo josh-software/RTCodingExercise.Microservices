@@ -24,6 +24,7 @@ namespace Catalog.API.Consumers
 
             // Fetch plates
             var page = await _plateRepository.GetPaginatedAsync(limit, offset);
+            var page = await _plateRepository.GetAllPaginatedAsync(limit, offset);
 
             // Convert to DTOs
             var response = new PaginatedDto<PlateDto>

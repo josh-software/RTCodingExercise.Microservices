@@ -45,6 +45,7 @@ namespace Catalog.UnitTests
             };
 
             _mockPlateRepository.Setup(repo => repo.GetPaginatedAsync(It.IsAny<int>(), It.IsAny<int>()))
+            _mockPlateRepository.Setup(repo => repo.GetAllPaginatedAsync(It.IsAny<int>(), It.IsAny<int>()))
                 .ReturnsAsync(paginatedPlates);
 
             _mockConsumeContext.Setup(context => context.Message)

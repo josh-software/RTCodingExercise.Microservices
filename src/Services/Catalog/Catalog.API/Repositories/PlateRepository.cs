@@ -32,6 +32,7 @@ namespace Catalog.API.Repositories
         }
 
         public async Task<PaginatedDto<Plate>> GetPaginatedAsync(int Limit, int Offset)
+        public async Task<PaginatedDto<Plate>> GetAllPaginatedAsync(int Limit, int Offset)
         {
             if (Limit < 0 || Offset < 0)
             {
