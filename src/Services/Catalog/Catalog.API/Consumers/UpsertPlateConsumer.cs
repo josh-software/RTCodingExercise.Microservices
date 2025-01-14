@@ -26,6 +26,7 @@ namespace Catalog.API.Consumers
             else
             {
                 // Add new plate
+                // TODO: Need to add validation logic to make sure we're adding a legitmate plate, i.e. Not a duplicate registration valid price etc.
                 await _plateRepository.AddAsync(plateDto.FromDto());
             }
         }
