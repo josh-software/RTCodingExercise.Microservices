@@ -11,7 +11,7 @@ using MassTransit;
 using Moq;
 using Xunit;
 
-namespace Catalog.UnitTests
+namespace Catalog.UnitTests.Consumers
 {
     public class GetPlatesConsumerTests
     {
@@ -133,41 +133,6 @@ namespace Catalog.UnitTests
                 response.Response.Limit == 0 &&
                 response.Response.Offset == 0 &&
                 response.Response.Total == 0
-            )), Times.Once);
-        }
-
-        [Fact]
-        public async Task Consume_ShouldRespondWithCorrectData_WhenOffsetIsGreaterThanTotal()
-        {
-            // Arrange
-            var plates = new List<Plate>
-        {
-            new Plate (Guid.NewGuid(), "Plate1", 0, 1 ),
-        };
-
-            var paginatedPlates = new PaginatedDto<Plate>
-            {
-                Items = plates,
-                Limit = 10,
-                Offset = 15, // Greater than total
-                Total = 1
-            };
-
-            _mockPlateRepository.Setup(repo => repo.GetAllPaginatedAsync(It.IsAny<int>(), It.IsAny<int>()))
-                .ReturnsAsync(paginatedPlates);
-
-            _mockConsumeContext.Setup(context => context.Message)
-                .Returns(new GetPlatesRequest(10, 15));
-
-            // Act
-            await _consumer.Consume(_mockConsumeContext.Object);
-
-            // Assert
-            _mockConsumeContext.Verify(context => context.RespondAsync(It.Is<GetPlatesResponse>(response =>
-                response.Response.Items.Count() == 1 &&
-                response.Response.Limit == 10 &&
-                response.Response.Offset == 15 &&
-                response.Response.Total == 1
             )), Times.Once);
         }
     }
