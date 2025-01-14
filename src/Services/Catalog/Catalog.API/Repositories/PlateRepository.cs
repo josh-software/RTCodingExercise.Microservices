@@ -72,6 +72,7 @@ namespace Catalog.API.Repositories
             }
 
             var plates = await _context.Plates
+                .OrderBy(p => p.Id)
                 .Skip(offset)
                 .Take(limit)
                 .Select(p => p.FromEntity())
