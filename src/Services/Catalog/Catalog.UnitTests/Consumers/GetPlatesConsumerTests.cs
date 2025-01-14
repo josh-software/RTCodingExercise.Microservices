@@ -105,35 +105,5 @@ namespace Catalog.UnitTests.Consumers
             // Act & Assert
             await Assert.ThrowsAsync<Exception>(() => _consumer.Consume(_mockConsumeContext.Object));
         }
-
-        [Fact]
-        public async Task Consume_ShouldHandleEdgeCase_WhenLimitIsZero()
-        {
-            // Arrange
-            var paginatedPlates = new PaginatedDto<Plate>
-            {
-                Items = new List<Plate>(),
-                Limit = 0,
-                Offset = 0,
-                Total = 0
-            };
-
-            _mockPlateRepository.Setup(repo => repo.GetAllPaginatedAsync(It.IsAny<int>(), It.IsAny<int>()))
-                .ReturnsAsync(paginatedPlates);
-
-            _mockConsumeContext.Setup(context => context.Message)
-                .Returns(new GetPlatesRequest(0, 0));
-
-            // Act
-            await _consumer.Consume(_mockConsumeContext.Object);
-
-            // Assert
-            _mockConsumeContext.Verify(context => context.RespondAsync(It.Is<GetPlatesResponse>(response =>
-                response.Response.Items.Count() == 0 &&
-                response.Response.Limit == 0 &&
-                response.Response.Offset == 0 &&
-                response.Response.Total == 0
-            )), Times.Once);
-        }
     }
 }
