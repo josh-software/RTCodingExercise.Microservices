@@ -26,7 +26,7 @@
             Numbers = getNumbers(registration);
         }
 
-        public Plate(Guid id, string? registration, decimal purchasePrice, decimal salePrice, string letters, int numbers)
+        public Plate(Guid id, string? registration, decimal purchasePrice, decimal salePrice, string? letters, int numbers)
             : this(id, registration, purchasePrice, salePrice)
         {
             Letters = letters;
