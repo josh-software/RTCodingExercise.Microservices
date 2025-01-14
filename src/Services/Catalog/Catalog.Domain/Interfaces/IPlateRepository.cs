@@ -8,6 +8,6 @@ namespace Catalog.Domain.Interfaces
         Task UpdateAsync(Plate plate);
         Task DeleteAsync(Guid id);
         Task<Plate?> GetAsync(Guid id);
-        Task<PaginatedDto<Plate>> GetAllPaginatedAsync(int Limit, int Offset);
+        Task<PaginatedDto<Plate>> GetAllPaginatedAsync(int Limit, int Offset, string sortBy, string sortDirection);
     }
 }

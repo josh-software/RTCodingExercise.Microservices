@@ -32,8 +32,8 @@ namespace Catalog.UnitTests.API.Consumers
             // Arrange
             var plates = new List<Plate>
             {
-                new Plate (Guid.NewGuid(), "Plate1", 0, 1 ),
-                new Plate (Guid.NewGuid(), "Plate2", 0, 1 )
+                new Plate(Guid.NewGuid(), "Plate1", 0, 1),
+                new Plate(Guid.NewGuid(), "Plate2", 0, 1)
             };
 
             var paginatedPlates = new PaginatedDto<Plate>
@@ -44,11 +44,11 @@ namespace Catalog.UnitTests.API.Consumers
                 Total = 2
             };
 
-            _mockPlateRepository.Setup(repo => repo.GetAllPaginatedAsync(It.IsAny<int>(), It.IsAny<int>()))
+            _mockPlateRepository.Setup(repo => repo.GetAllPaginatedAsync(10, 0, "Id", "Asc"))
                 .ReturnsAsync(paginatedPlates);
 
             _mockConsumeContext.Setup(context => context.Message)
-                .Returns(new GetPlatesRequest(10, 0));
+                .Returns(new GetPlatesRequest(10, 0, "Id", "Asc"));
 
             // Act
             await _consumer.Consume(_mockConsumeContext.Object);
@@ -74,13 +74,13 @@ namespace Catalog.UnitTests.API.Consumers
                 Total = 0
             };
 
-            _mockPlateRepository.Setup(repo => repo.GetAllPaginatedAsync(It.IsAny<int>(), It.IsAny<int>()))
+            _mockPlateRepository.Setup(repo => repo.GetAllPaginatedAsync(10, 0, "Id", "Asc"))
                 .ReturnsAsync(paginatedPlates);
 
             _mockConsumeContext.Setup(context => context.Message)
-                .Returns(new GetPlatesRequest(10, 0));
+                .Returns(new GetPlatesRequest(10, 0, "Id", "Asc"));
 
-            // Act
+            // Act\
             await _consumer.Consume(_mockConsumeContext.Object);
 
             // Assert
@@ -96,11 +96,11 @@ namespace Catalog.UnitTests.API.Consumers
         public async Task Consume_ShouldHandleException_WhenRepositoryFails()
         {
             // Arrange
-            _mockPlateRepository.Setup(repo => repo.GetAllPaginatedAsync(It.IsAny<int>(), It.IsAny<int>()))
+            _mockPlateRepository.Setup(repo => repo.GetAllPaginatedAsync(10, 0, "Id", "Asc"))
                 .ThrowsAsync(new Exception("Repository error"));
 
             _mockConsumeContext.Setup(context => context.Message)
-                .Returns(new GetPlatesRequest(10, 0));
+                .Returns(new GetPlatesRequest(10, 0, "Id", "Asc"));
 
             // Act & Assert
             await Assert.ThrowsAsync<Exception>(() => _consumer.Consume(_mockConsumeContext.Object));

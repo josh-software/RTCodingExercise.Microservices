@@ -7,11 +7,37 @@ namespace Contracts.Plates
     {
         public int Limit { get; set; }
         public int Offset { get; set; }
+        public SortBy Sort { get; set; } = SortBy.Id;
+        public SortDirection Direction { get; set; } = SortDirection.Asc;
 
-        public GetPlatesRequest(int limit, int offset)
+        public enum SortBy
         {
+            Id,
+            Registration,
+            PurchasePrice,
+            SalePrice
+        }
+
+        public enum SortDirection
+        {
+            Asc,
+            Desc
+        }
+
+        public GetPlatesRequest() { }
+
+        public GetPlatesRequest(int limit, int offset, string sortBy, string sortDirection)
+        {
+            if (!Enum.TryParse(sortBy, ignoreCase: true, out SortBy sortByEnum))
+                throw new ArgumentException($"Invalid value for {nameof(sortBy)}", nameof(sortBy));
+
+            if (!Enum.TryParse(sortDirection, ignoreCase: true, out SortDirection sortDirectionEnum))
+                throw new ArgumentException($"Invalid value for {nameof(sortDirection)}", nameof(sortDirection));
+
             Limit = limit;
             Offset = offset;
+            Sort = sortByEnum;
+            Direction = sortDirectionEnum;
         }
     }
 

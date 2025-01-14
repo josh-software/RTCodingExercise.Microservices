@@ -1,4 +1,4 @@
-﻿@model PaginatedViewModel<DTOs.PlateDto>
+﻿@model HomeViewModel<DTOs.PlateDto>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -14,9 +14,33 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Plate</th>
-                    <th>Purchase Price</th>
-                    <th>Sale Price</th>
+                    <th>
+                        <a href="@Url.Action("Index", new { sortBy = "Registration", sortDirection = Model.SortBy == "Registration" && Model.SortDirection == "asc" ? "desc" : "asc", pageNumber = Model.CurrentPage })">
+                            Plate
+                            @if (Model.SortBy == "Registration")
+                            {
+                                <span>@(Model.SortDirection == "asc" ? "↑" : "↓")</span>
+                            }
+                        </a>
+                    </th>
+                    <th>
+                        <a href="@Url.Action("Index", new { sortBy = "PurchasePrice", sortDirection = Model.SortBy == "PurchasePrice" && Model.SortDirection == "asc" ? "desc" : "asc", pageNumber = Model.CurrentPage })">
+                            Purchase Price
+                            @if (Model.SortBy == "PurchasePrice")
+                            {
+                                <span>@(Model.SortDirection == "asc" ? "↑" : "↓")</span>
+                            }
+                        </a>
+                    </th>
+                    <th>
+                        <a href="@Url.Action("Index", new { sortBy = "SalePrice", sortDirection = Model.SortBy == "SalePrice" && Model.SortDirection == "asc" ? "desc" : "asc", pageNumber = Model.CurrentPage })">
+                            Sale Price
+                            @if (Model.SortBy == "SalePrice")
+                            {
+                                <span>@(Model.SortDirection == "asc" ? "↑" : "↓")</span>
+                            }
+                        </a>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -33,18 +57,18 @@
         <nav>
             <ul class="pagination">
                 <li class="page-item @(Model.CurrentPage <= 1 ? "disabled" : "")">
-                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.CurrentPage - 1)">
+                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.CurrentPage - 1)" asp-route-sortBy="@Model.SortBy" asp-route-sortDirection="@Model.SortDirection">
                         Previous
                     </a>
                 </li>
                 @for (int i = 1; i <= Model.TotalPages; i++)
                 {
                     <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@i">@i</a>
+                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@i" asp-route-sortBy="@Model.SortBy" asp-route-sortDirection="@Model.SortDirection">@i</a>
                     </li>
                 }
                 <li class="page-item @(Model.CurrentPage >= Model.TotalPages ? "disabled" : "")">
-                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.CurrentPage + 1)">
+                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.CurrentPage + 1)" asp-route-sortBy="@Model.SortBy" asp-route-sortDirection="@Model.SortDirection">
                         Next
                     </a>
                 </li>

@@ -1,4 +1,5 @@
-﻿using Catalog.API.Mappings;
+﻿using System.Linq.Dynamic.Core;
+using Catalog.API.Mappings;
 using Catalog.Domain.Interfaces;
 using DTOs.Common;
 
@@ -64,7 +65,7 @@ namespace Catalog.API.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<PaginatedDto<Plate>> GetAllPaginatedAsync(int limit, int offset)
+        public async Task<PaginatedDto<Plate>> GetAllPaginatedAsync(int limit, int offset, string sortBy, string sortDirection)
         {
             if (limit < 0 || offset < 0)
             {
@@ -72,7 +73,7 @@ namespace Catalog.API.Repositories
             }
 
             var plates = await _context.Plates
-                .OrderBy(p => p.Id)
+                .OrderBy($"{sortBy} {sortDirection}")
                 .Skip(offset)
                 .Take(limit)
                 .Select(p => p.FromEntity())
