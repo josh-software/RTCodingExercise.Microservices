@@ -14,7 +14,7 @@
 
         public int Numbers { get; set; }
 
-        public decimal CalculatedSalePrice => CalculateSalePrice(PurchasePrice);
+        public decimal CalculatedSalePrice => CalculateSalePrice(SalePrice);
 
         public Plate(Guid id, string? registration, decimal purchasePrice, decimal salePrice)
         {
