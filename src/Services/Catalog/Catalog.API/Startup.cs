@@ -57,6 +57,7 @@ namespace Catalog.API
             {
                 //Add consumers here
                 x.AddConsumer<GetPlatesConsumer>();
+                x.AddConsumer<UpsertPlateConsumer>();
 
                 //Rabbit Configuration
                 x.UsingRabbitMq((context, cfg) =>

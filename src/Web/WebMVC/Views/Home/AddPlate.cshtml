@@ -1,0 +1,26 @@
+﻿@model DTOs.PlateDto
+
+@{
+    ViewData["Title"] = "Add Plate";
+}
+
+<h2>Add Plate</h2>
+
+<form asp-action="AddPlate" method="post">
+    <div class="form-group">
+        <label asp-for="Registration"></label>
+        <input asp-for="Registration" class="form-control" />
+        <span asp-validation-for="Registration" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PurchasePrice"></label>
+        <input asp-for="PurchasePrice" class="form-control" />
+        <span asp-validation-for="PurchasePrice" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="SalePrice"></label>
+        <input asp-for="SalePrice" class="form-control" />
+        <span asp-validation-for="SalePrice" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Plate</button>
+</form>

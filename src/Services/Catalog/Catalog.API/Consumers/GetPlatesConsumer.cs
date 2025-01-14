@@ -23,7 +23,7 @@ namespace Catalog.API.Consumers
             var offset = consumer.Message.Offset;
 
             // Fetch plates
-            var page = await _plateRepository.GetPaginatedAsync(limit, offset);
+            var page = await _plateRepository.GetAllPaginatedAsync(limit, offset);
 
             // Convert to DTOs
             var response = new PaginatedDto<PlateDto>
