@@ -28,17 +28,15 @@ namespace Catalog.UnitTests.API.Consumers
         public async Task Consume_ShouldAddNewPlate_WhenPlateDoesNotExist()
         {
             // Arrange
-            var plateDto = new PlateDto { Id = Guid.NewGuid(), Registration = "New Plate" };
+            var plateDto = new PlateDto { Id = null, Registration = "New Plate" };
             var upsertEvent = new UpsertPlateEvent(plateDto);
             _mockConsumeContext.Setup(context => context.Message).Returns(upsertEvent);
-
-            _mockPlateRepository.Setup(repo => repo.GetAsync(plateDto.Id))
-                .ReturnsAsync((Plate?)null); //Simulating that the plate doesn't exist
 
             // Act
             await _consumer.Consume(_mockConsumeContext.Object);
 
             // Assert
+            _mockPlateRepository.Verify(repo => repo.GetAsync(It.IsAny<Guid>()), Times.Never);
             _mockPlateRepository.Verify(repo => repo.AddAsync(It.IsAny<Plate>()), Times.Once);
             _mockPlateRepository.Verify(repo => repo.UpdateAsync(It.IsAny<Plate>()), Times.Never);
         }
@@ -49,10 +47,10 @@ namespace Catalog.UnitTests.API.Consumers
             // Arrange
             var plateDto = new PlateDto { Id = Guid.NewGuid(), Registration = "Existing Plate" };
             var upsertEvent = new UpsertPlateEvent(plateDto);
-            var existingPlate = new Plate(plateDto.Id, plateDto.Registration, 0, 1);
+            var existingPlate = new Plate((Guid)plateDto.Id, plateDto.Registration, 0, 1);
             _mockConsumeContext.Setup(context => context.Message).Returns(upsertEvent);
 
-            _mockPlateRepository.Setup(repo => repo.GetAsync(plateDto.Id))
+            _mockPlateRepository.Setup(repo => repo.GetAsync((Guid)plateDto.Id))
                 .ReturnsAsync(existingPlate); //Simulating that the plate exists
 
             // Act

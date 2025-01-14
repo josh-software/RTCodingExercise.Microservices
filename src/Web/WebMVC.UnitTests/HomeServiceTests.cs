@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Contracts.Plates;
 using DTOs;
 using DTOs.Common;
+using IntegrationEvents.Plates;
 using MassTransit;
 using Moq;
 using WebMVC.Services;
@@ -63,5 +64,30 @@ namespace WebMVC.UnitTests.Services
             Assert.Equal(expectedPlates[0].Registration, result.Items.First().Registration);
             Assert.Equal(paginatedResponse.Total, result.TotalCount);
         }
+
+        [Fact]
+        public async Task UpsertPlateAsync_PublishesUpsertPlateEvent()
+        {
+            // Arrange
+            var plateDto = new PlateDto
+            {
+                Id = Guid.NewGuid(),
+                Registration = "Plate123",
+                PurchasePrice = 100m,
+                SalePrice = 120m
+            };
+
+            // Act
+            await _homeService.UpsertPlateAsync(plateDto);
+
+            // Assert
+            _mockPublishEndpoint.Verify(p => p.Publish(It.Is<UpsertPlateEvent>(e =>
+                e.Plate.Id == plateDto.Id &&
+                e.Plate.Registration == plateDto.Registration &&
+                e.Plate.PurchasePrice == plateDto.PurchasePrice &&
+                e.Plate.SalePrice == plateDto.SalePrice
+            ), default), Times.Once);
+        }
+
     }
 }

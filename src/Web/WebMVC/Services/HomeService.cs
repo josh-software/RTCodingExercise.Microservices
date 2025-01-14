@@ -19,14 +19,15 @@ namespace WebMVC.Services
             _getPlatesClient = getPlatesClient;
         }
 
-        public async Task<PaginatedResponse<PlateDto>> GetPlatesAsync(int pageNumber, int pageSize)
+        public async Task<PaginatedViewModel<PlateDto>> GetPlatesAsync(int pageNumber, int pageSize)
         {
             var response = await _getPlatesClient.GetResponse<GetPlatesResponse>(
                 new GetPlatesRequest(
                     pageSize,
                     (pageNumber - 1) * pageSize
                 ));
-            var paginatedResponse = PaginatedResponse<PlateDto>.FromDto(response.Message.Response);
+
+            var paginatedResponse = PaginatedViewModel<PlateDto>.FromDto(response.Message.Response);
             return paginatedResponse;
         }
 

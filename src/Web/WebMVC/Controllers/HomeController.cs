@@ -17,6 +17,7 @@ namespace WebMVC.Controllers
         }
 
         [ResponseCache(Duration = 5)]
+        [HttpGet]
         public async Task<IActionResult> Index(int pageNumber = 1)
         {
             var pageSize = 20;
@@ -25,17 +26,22 @@ namespace WebMVC.Controllers
             return View(plates);
         }
 
-        public async Task<IActionResult> UpsertPlate(PlateDto plateDto)
+        [HttpGet]
+        public IActionResult AddPlate()
         {
-            try
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddPlate(PlateDto plateDto)
+        {
+            if (ModelState.IsValid)
             {
                 await _homeService.UpsertPlateAsync(plateDto);
-                return Ok("done");
+                return RedirectToAction("");
             }
-            catch (Exception ex)
-            {
-                return BadRequest($"failed: {ex.Message}");
-            }
+
+            return View(plateDto);
         }
 
         public IActionResult Privacy()

@@ -5,7 +5,7 @@ using MassTransit;
 
 namespace Catalog.API.Consumers
 {
-    public class UpsertPlateConsumer
+    public class UpsertPlateConsumer : IConsumer<UpsertPlateEvent>
     {
         private readonly IPlateRepository _plateRepository;
 
@@ -18,17 +18,15 @@ namespace Catalog.API.Consumers
         {
             var plateDto = context.Message.Plate;
 
-            // Check if plate exists
-            var plate = await _plateRepository.GetAsync(plateDto.Id);
-            if (plate == null)
-            {
-                // Add new plate
-                await _plateRepository.AddAsync(plateDto.FromDto());
-            }
-            else
+            if (plateDto.Id is not null && await _plateRepository.GetAsync((Guid)plateDto.Id) is not null)
             {
                 // Update existing plate
                 await _plateRepository.UpdateAsync(plateDto.FromDto());
+            }
+            else
+            {
+                // Add new plate
+                await _plateRepository.AddAsync(plateDto.FromDto());
             }
         }
     }

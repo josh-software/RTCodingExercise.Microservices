@@ -1,4 +1,4 @@
-﻿@model PaginatedResponse<DTOs.PlateDto>
+﻿@model PaginatedViewModel<DTOs.PlateDto>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -25,7 +25,6 @@
                     <tr>
                         <td>@plate.Registration</td>
                         <td>@plate.PurchasePrice</td>
-                        <td>@plate.SalePrice</td>
                         <td>@plate.CalculatedSalePrice</td>
                     </tr>
                 }

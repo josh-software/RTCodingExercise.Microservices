@@ -2,7 +2,7 @@
 
 namespace WebMVC.Models
 {
-    public class PaginatedResponse<T>
+    public class PaginatedViewModel<T>
     {
         public IEnumerable<T> Items { get; set; } = new List<T>();
         public int CurrentPage => (Offset / PageSize) + 1;
@@ -14,7 +14,7 @@ namespace WebMVC.Models
         public bool HasPreviousPage => CurrentPage > 1;
         public bool HasNextPage => CurrentPage < TotalPages;
 
-        public PaginatedResponse(IEnumerable<T> items, int totalCount, int offset, int pageSize)
+        public PaginatedViewModel(IEnumerable<T> items, int totalCount, int offset, int pageSize)
         {
             Items = items;
             TotalCount = totalCount;
@@ -22,9 +22,9 @@ namespace WebMVC.Models
             PageSize = pageSize;
         }
 
-        public static PaginatedResponse<T> FromDto(PaginatedDto<T> paginatedDto)
+        public static PaginatedViewModel<T> FromDto(PaginatedDto<T> paginatedDto)
         {
-            return new PaginatedResponse<T>(
+            return new PaginatedViewModel<T>(
                 paginatedDto.Items,
                 paginatedDto.Total,
                 paginatedDto.Offset,

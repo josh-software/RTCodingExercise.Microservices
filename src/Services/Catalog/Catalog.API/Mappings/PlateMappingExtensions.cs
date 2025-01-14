@@ -20,7 +20,7 @@
         public static Plate FromDto(this PlateDto plateDto)
         {
             return new Plate(
-                plateDto.Id,
+                plateDto.Id ?? Guid.NewGuid(),
                 plateDto.Registration,
                 plateDto.PurchasePrice,
                 plateDto.SalePrice);
