@@ -32,8 +32,8 @@ namespace Catalog.UnitTests
             // Arrange
             var plates = new List<Plate>
             {
-                new Plate { Id = Guid.NewGuid(), Registration = "Plate1", PurchasePrice = 0, SalePrice = 1 },
-                new Plate { Id = Guid.NewGuid(), Registration = "Plate2", PurchasePrice = 0, SalePrice = 1 }
+                new Plate (Guid.NewGuid(), "Plate1", 0, 1 ),
+                new Plate (Guid.NewGuid(), "Plate2", 0, 1 )
             };
 
             var paginatedPlates = new PaginatedDto<Plate>
@@ -44,7 +44,6 @@ namespace Catalog.UnitTests
                 Total = 2
             };
 
-            _mockPlateRepository.Setup(repo => repo.GetPaginatedAsync(It.IsAny<int>(), It.IsAny<int>()))
             _mockPlateRepository.Setup(repo => repo.GetAllPaginatedAsync(It.IsAny<int>(), It.IsAny<int>()))
                 .ReturnsAsync(paginatedPlates);
 

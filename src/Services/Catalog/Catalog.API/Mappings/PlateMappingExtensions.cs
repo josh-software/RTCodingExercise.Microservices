@@ -17,6 +17,15 @@
             };
         }
 
+        public static Plate FromDto(this PlateDto plateDto)
+        {
+            return new Plate(
+                plateDto.Id,
+                plateDto.Registration,
+                plateDto.PurchasePrice,
+                plateDto.SalePrice);
+        }
+
         public static IEnumerable<PlateDto> ToDtos(this IEnumerable<Plate> plates)
         {
             return plates.Select(plate => plate.ToDto());
@@ -37,15 +46,14 @@
 
         public static Plate FromEntity(this PlateEntity plateEntity)
         {
-            return new Plate
-            {
-                Id = plateEntity.Id,
-                Registration = plateEntity.Registration,
-                PurchasePrice = plateEntity.PurchasePrice,
-                SalePrice = plateEntity.SalePrice,
-                Letters = plateEntity.Letters,
-                Numbers = plateEntity.Numbers
-            };
+            return new Plate(
+                plateEntity.Id,
+                plateEntity.Registration,
+                plateEntity.PurchasePrice,
+                plateEntity.SalePrice,
+                plateEntity.Letters,
+                plateEntity.Numbers
+            );
         }
     }
 }

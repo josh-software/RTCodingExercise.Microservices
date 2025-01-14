@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using DTOs;
 using WebMVC.Models;
 using WebMVC.Services;
 
@@ -15,13 +16,26 @@ namespace WebMVC.Controllers
             _logger = logger;
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [ResponseCache(Duration = 5)]
         public async Task<IActionResult> Index(int pageNumber = 1)
         {
             var pageSize = 20;
             var plates = await _homeService.GetPlatesAsync(pageNumber, pageSize);
 
             return View(plates);
+        }
+
+        public async Task<IActionResult> UpsertPlate(PlateDto plateDto)
+        {
+            try
+            {
+                await _homeService.UpsertPlateAsync(plateDto);
+                return Ok("done");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"failed: {ex.Message}");
+            }
         }
 
         public IActionResult Privacy()

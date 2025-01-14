@@ -13,25 +13,57 @@ namespace Catalog.API.Repositories
             _context = context;
         }
 
-        public Task AddAsync(Plate plate)
+        public async Task AddAsync(Plate plate)
         {
-            throw new NotImplementedException();
+            if (plate == null)
+            {
+                throw new ArgumentNullException(nameof(plate));
+            }
+
+            await _context.Plates.AddAsync(plate.ToEntity());
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var plate = await _context.Plates.FindAsync(id);
+            if (plate == null)
+            {
+                throw new KeyNotFoundException($"Plate with id {id} not found.");
+            }
+
+            _context.Plates.Remove(plate);
+            await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Plate>> GetAllAsync()
+        public async Task<Plate?> GetAsync(Guid id)
         {
-            var plates = await _context.Plates
-                .Select(p => p.FromEntity())
-                .ToListAsync();
-            return plates;
+            var plate = await _context.Plates.FindAsync(id);
+            if (plate == null)
+            {
+                // TODO: Handle null case if needed
+                return null;
+            }
+            return plate.FromEntity();
         }
 
-        public async Task<PaginatedDto<Plate>> GetPaginatedAsync(int Limit, int Offset)
+        public async Task UpdateAsync(Plate plate)
+        {
+            if (plate == null)
+            {
+                throw new ArgumentNullException(nameof(plate));
+            }
+
+            var existingPlate = await _context.Plates.FindAsync(plate.Id);
+            if (existingPlate == null)
+            {
+                throw new KeyNotFoundException($"Plate with id {plate.Id} not found.");
+            }
+
+            _context.Entry(existingPlate).CurrentValues.SetValues(plate.ToEntity());
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<PaginatedDto<Plate>> GetAllPaginatedAsync(int Limit, int Offset)
         {
             if (Limit < 0 || Offset < 0)
@@ -39,7 +71,6 @@ namespace Catalog.API.Repositories
                 throw new ArgumentException("Limit and Offset must be non-negative");
             }
 
-            // Execute tasks sequentially to avoid DbContext concurrency issues
             var plates = await _context.Plates
                 .Skip(Offset)
                 .Take(Limit)
@@ -55,32 +86,6 @@ namespace Catalog.API.Repositories
                 Offset = Offset,
                 Total = total
             };
-        }
-
-        public Task<IEnumerable<Plate>> GetAvailablePlatesAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Plate?> GetByIdAsync(int id)
-        {
-            var plate = await _context.Plates.FindAsync(id);
-            if (plate == null)
-            {
-                // TODO: Handle null case if needed
-                return null;
-            }
-            return plate.FromEntity();
-        }
-
-        public Task UpdateAsync(Plate plate)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<Plate> IPlateRepository.GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
         }
     }
 }

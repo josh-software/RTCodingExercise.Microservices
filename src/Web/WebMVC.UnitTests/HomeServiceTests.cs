@@ -14,13 +14,15 @@ namespace WebMVC.UnitTests.Services
 {
     public class HomeServiceTests
     {
-        private readonly Mock<IRequestClient<GetPlatesRequest>> _mockClient;
+        private readonly Mock<IPublishEndpoint> _mockPublishEndpoint;
+        private readonly Mock<IRequestClient<GetPlatesRequest>> _mockGetPlatesClient;
         private readonly HomeService _homeService;
 
         public HomeServiceTests()
         {
-            _mockClient = new Mock<IRequestClient<GetPlatesRequest>>();
-            _homeService = new HomeService(_mockClient.Object);
+            _mockPublishEndpoint = new Mock<IPublishEndpoint>();
+            _mockGetPlatesClient = new Mock<IRequestClient<GetPlatesRequest>>();
+            _homeService = new HomeService(_mockPublishEndpoint.Object, _mockGetPlatesClient.Object);
         }
 
         [Fact]
@@ -45,7 +47,7 @@ namespace WebMVC.UnitTests.Services
             var responseMock = new Mock<Response<GetPlatesResponse>>();
             responseMock.Setup(r => r.Message).Returns(platesResponse);
 
-            _mockClient
+            _mockGetPlatesClient
                 .Setup(c => c.GetResponse<GetPlatesResponse>(It.IsAny<GetPlatesRequest>(), default, default))
                 .ReturnsAsync(responseMock.Object);
 
