@@ -38,7 +38,7 @@
             if (string.IsNullOrEmpty(registration))
                 return string.Empty;
 
-            return new string(registration.TakeWhile(char.IsLetter).ToArray());
+            return new string(registration.Where(char.IsLetter).ToArray());
         }
 
         // TODO - JS: Need to figure out how to handle plates without numbers
@@ -48,7 +48,7 @@
             if (string.IsNullOrEmpty(registration))
                 return -1;
 
-            var numbersPart = new string(registration.SkipWhile(char.IsLetter).ToArray());
+            var numbersPart = new string(registration.Where(char.IsDigit).ToArray());
             return int.TryParse(numbersPart, out var result) ? result : -1;
         }
 

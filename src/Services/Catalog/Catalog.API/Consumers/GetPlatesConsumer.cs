@@ -21,11 +21,14 @@ namespace Catalog.API.Consumers
             // Check for limit and offset
             var limit = consumer.Message.Limit;
             var offset = consumer.Message.Offset;
+            var searchQuery = consumer.Message.SearchQuery;
             var sort = consumer.Message.Sort.ToString();
             var direction = consumer.Message.Direction.ToString();
 
+            // TODO: Validation, make sure that searchQuery is not too long
+
             // Fetch plates
-            var page = await _plateRepository.GetAllPaginatedAsync(limit, offset, sort, direction);
+            var page = await _plateRepository.GetAllPaginatedAsync(limit, offset, searchQuery, sort, direction);
 
             // Convert to DTOs
             var response = new PaginatedDto<PlateDto>

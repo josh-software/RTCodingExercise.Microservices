@@ -20,13 +20,14 @@ namespace WebMVC.Services
         }
 
         public async Task<PaginatedDto<PlateDto>> GetPlatesAsync(
-            int pageNumber, int pageSize, string sortBy, string sortDirection
+            string? searchQuery, int pageNumber, int pageSize, string sortBy, string sortDirection
         )
         {
             var response = await _getPlatesClient.GetResponse<GetPlatesResponse>(
                 new GetPlatesRequest(
                     pageSize,
                     (pageNumber - 1) * pageSize,
+                    searchQuery,
                     sortBy,
                     sortDirection
                 ));

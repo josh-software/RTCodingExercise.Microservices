@@ -18,19 +18,23 @@ namespace WebMVC.Controllers
 
         [ResponseCache(Duration = 5)]
         [HttpGet]
-        public async Task<IActionResult> Index(int pageNumber = 1, string sortBy = "Id", string sortDirection = "Asc")
+        public async Task<IActionResult> Index(string? searchQuery = null, int currentPage = 1, string sortBy = "Id", string sortDirection = "Asc")
         {
             var pageSize = 20;
-            var plates = await _homeService.GetPlatesAsync(pageNumber, pageSize, sortBy, sortDirection);
+            var plates = await _homeService.GetPlatesAsync(searchQuery, currentPage, pageSize, sortBy, sortDirection);
 
             // Prepare ViewModel
             var viewModel = new HomeViewModel<PlateDto>
             {
                 Items = plates.Items,
-                SortBy = sortBy,
-                SortDirection = sortDirection,
-                CurrentPage = pageNumber,
-                TotalPages = (int)Math.Ceiling((double)plates.Total / plates.Limit)
+                TotalPages = (int)Math.Ceiling((double)plates.Total / plates.Limit),
+                PaginationState = new PaginationStateModel
+                {
+                    SortBy = sortBy,
+                    SortDirection = sortDirection,
+                    CurrentPage = currentPage,
+                    SearchQuery = searchQuery
+                }
             };
 
             return View(viewModel);

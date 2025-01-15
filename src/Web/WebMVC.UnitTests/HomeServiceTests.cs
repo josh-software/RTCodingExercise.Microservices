@@ -53,7 +53,7 @@ namespace WebMVC.UnitTests.Services
                 .ReturnsAsync(responseMock.Object);
 
             // Act
-            var result = await _homeService.GetPlatesAsync(pageNumber, pageSize, "Id", "Asc");
+            var result = await _homeService.GetPlatesAsync("", pageNumber, pageSize, "Id", "Asc");
 
             // Assert
             Assert.NotNull(result);
