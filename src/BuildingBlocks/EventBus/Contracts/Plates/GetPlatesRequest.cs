@@ -7,6 +7,7 @@ namespace Contracts.Plates
     {
         public int Limit { get; set; }
         public int Offset { get; set; }
+        public string? SearchQuery { get; set; }
         public SortBy Sort { get; set; } = SortBy.Id;
         public SortDirection Direction { get; set; } = SortDirection.Asc;
 
@@ -26,7 +27,7 @@ namespace Contracts.Plates
 
         public GetPlatesRequest() { }
 
-        public GetPlatesRequest(int limit, int offset, string sortBy, string sortDirection)
+        public GetPlatesRequest(int limit, int offset, string? searchQuery, string sortBy, string sortDirection)
         {
             if (!Enum.TryParse(sortBy, ignoreCase: true, out SortBy sortByEnum))
                 throw new ArgumentException($"Invalid value for {nameof(sortBy)}", nameof(sortBy));
@@ -36,6 +37,7 @@ namespace Contracts.Plates
 
             Limit = limit;
             Offset = offset;
+            SearchQuery = searchQuery;
             Sort = sortByEnum;
             Direction = sortDirectionEnum;
         }

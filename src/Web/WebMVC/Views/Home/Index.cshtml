@@ -9,13 +9,24 @@
     <p>Test check.</p>
 </div>
 <div>
+    @{/* Couldn't figure out to stop this resetting everything else, but I think that's okay for now (would have liked to have kept sorting though) */}
+    <div>
+        <form method="get" asp-action="Index">
+            <div class="form-group">
+                <label for="searchQuery">Search Plates:</label>
+                <input type="text" class="form-control" id="searchQuery" name="searchQuery" value="@Model.PaginationState.SearchQuery" placeholder="Enter plate to search">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
     @if (Model != null && Model.Items.Any())
     {
+
         <table class="table">
             <thead>
                 <tr>
                     <th>
-                        <a href="@Url.Action("Index", Model.PaginationState.ChangeSortBy("Registration"))">
+                        <a href="@Url.Action("Index", Model.PaginationState.SetSortBy("Registration"))">
                             Plate
                             @if (Model.PaginationState.SortBy == "Registration")
                             {
@@ -24,7 +35,7 @@
                         </a>
                     </th>
                     <th>
-                        <a href="@Url.Action("Index", Model.PaginationState.ChangeSortBy("PurchasePrice"))">
+                        <a href="@Url.Action("Index", Model.PaginationState.SetSortBy("PurchasePrice"))">
                             Purchase Price
                             @if (Model.PaginationState.SortBy == "PurchasePrice")
                             {
@@ -33,7 +44,7 @@
                         </a>
                     </th>
                     <th>
-                        <a href="@Url.Action("Index", Model.PaginationState.ChangeSortBy("SalePrice"))">
+                        <a href="@Url.Action("Index", Model.PaginationState.SetSortBy("SalePrice"))">
                             Sale Price
                             @if (Model.PaginationState.SortBy == "SalePrice")
                             {
@@ -57,20 +68,20 @@
         <nav>
             <ul class="pagination">
                 <li class="page-item @(Model.PaginationState.CurrentPage <= 1 ? "disabled" : "")">
-                    <a class="page-link" href="@Url.Action("Index", Model.PaginationState.ChangePage(Model.PaginationState.CurrentPage - 1))">
+                    <a class="page-link" href="@Url.Action("Index", Model.PaginationState.SetPage(Model.PaginationState.CurrentPage - 1))">
                         Previous
                     </a>
                 </li>
                 @for (int i = 1; i <= Model.TotalPages; i++)
                 {
                     <li class="page-item @(i == Model.PaginationState.CurrentPage ? "active" : "")">
-                        <a class="page-link" href="@Url.Action("Index", Model.PaginationState.ChangePage(i))">
+                        <a class="page-link" href="@Url.Action("Index", Model.PaginationState.SetPage(i))">
                             @i
                         </a>
                     </li>
                 }
                 <li class="page-item @(Model.PaginationState.CurrentPage >= Model.TotalPages ? "disabled" : "")">
-                    <a class="page-link" href="@Url.Action("Index", Model.PaginationState.ChangePage(Model.PaginationState.CurrentPage + 1))">
+                    <a class="page-link" href="@Url.Action("Index", Model.PaginationState.SetPage(Model.PaginationState.CurrentPage + 1))">
                         Next
                     </a>
                 </li>
