@@ -58,6 +58,14 @@ namespace WebMVC.Controllers
             return View(plateDto);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ReservePlate(Guid plateId)
+        {
+            await _homeService.ReservePlateAsync(plateId);
+
+            return RedirectToAction("");
+        }
+
         public IActionResult Privacy()
         {
             return View();

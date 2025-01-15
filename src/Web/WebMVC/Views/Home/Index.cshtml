@@ -52,6 +52,9 @@
                             }
                         </a>
                     </th>
+                    <th>
+                        Reserve
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -61,6 +64,13 @@
                         <td>@plate.Registration</td>
                         <td>@plate.PurchasePrice</td>
                         <td>@plate.CalculatedSalePrice</td>
+                        @{ /* This also wipes everything and returns to homepage. I'm not familiar with Razor, and would consult someone who knows better before doing this in a real production environment */ }
+                        <td>
+                            <form method="post" asp-action="ReservePlate">
+                                <input type="hidden" name="plateId" value="@plate.Id" />
+                                <button type="submit" class="btn btn-primary">Reserve</button>
+                            </form>
+                        </td>
                     </tr>
                 }
             </tbody>

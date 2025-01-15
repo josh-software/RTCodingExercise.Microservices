@@ -88,7 +88,8 @@ namespace Catalog.UnitTests.API.Mappings
                 Guid.NewGuid(),
                 "Plate123",
                 2000m,
-                2200m
+                2200m,
+                isReserved: false
             );
 
             // Act
@@ -101,6 +102,7 @@ namespace Catalog.UnitTests.API.Mappings
             Assert.Equal(plate.SalePrice, plateEntity.SalePrice);
             Assert.Equal("Plate", plateEntity.Letters);
             Assert.Equal(123, plateEntity.Numbers);
+            Assert.False(plateEntity.IsReserved);
         }
 
         [Fact]
@@ -114,7 +116,8 @@ namespace Catalog.UnitTests.API.Mappings
                 PurchasePrice = 2500m,
                 SalePrice = 2700m,
                 Letters = "Plate",
-                Numbers = 123
+                Numbers = 123,
+                IsReserved = false
             };
 
             // Act
@@ -127,6 +130,7 @@ namespace Catalog.UnitTests.API.Mappings
             Assert.Equal(plateEntity.SalePrice, plate.SalePrice);
             Assert.Equal(plateEntity.Letters, plate.Letters);
             Assert.Equal(plateEntity.Numbers, plate.Numbers);
+            Assert.Equal(plateEntity.IsReserved, plate.IsReserved);
         }
     }
 }

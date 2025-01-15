@@ -40,7 +40,8 @@
                 PurchasePrice = plate.PurchasePrice,
                 SalePrice = plate.SalePrice,
                 Letters = plate.Letters,
-                Numbers = plate.Numbers
+                Numbers = plate.Numbers,
+                IsReserved = plate.IsReserved
             };
         }
 

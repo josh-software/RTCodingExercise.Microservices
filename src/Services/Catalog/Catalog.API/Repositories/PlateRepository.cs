@@ -81,6 +81,7 @@ namespace Catalog.API.Repositories
             {
                 plates = await _context.Plates
                     .OrderBy($"{sortBy} {sortDirection}")
+                    .Where(p => !p.IsReserved)
                     .Skip(offset)
                     .Take(limit)
                     .Select(p => p.FromEntity())
@@ -91,6 +92,7 @@ namespace Catalog.API.Repositories
             else
             {
                 var context = _context.Plates
+                    .Where(p => !p.IsReserved)
                     .Where(p => p.Registration != null);
 
                 context = ApplySearchFilter(context, searchQuery);

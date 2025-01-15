@@ -40,5 +40,11 @@ namespace WebMVC.Services
             var eventMessage = new UpsertPlateEvent(plateDto);
             await _publishEndpoint.Publish(eventMessage);
         }
+
+        public async Task ReservePlateAsync(Guid PlateId)
+        {
+            var eventMessage = new ReservePlateEvent(PlateId);
+            await _publishEndpoint.Publish(eventMessage);
+        }
     }
 }
