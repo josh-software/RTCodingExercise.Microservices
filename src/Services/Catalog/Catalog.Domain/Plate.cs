@@ -14,23 +14,26 @@
 
         public int Numbers { get; set; }
 
+        public bool IsReserved { get; set; }
+
         public decimal CalculatedSalePrice => CalculateSalePrice(SalePrice);
 
-        public Plate(Guid id, string? registration, decimal purchasePrice, decimal salePrice)
+        public Plate(
+            Guid id,
+            string? registration,
+            decimal purchasePrice,
+            decimal salePrice,
+            string? letters = null,
+            int? numbers = null,
+            bool isReserved = false)
         {
             Id = id;
             Registration = registration;
             PurchasePrice = purchasePrice;
             SalePrice = salePrice;
-            Letters = getLetters(registration);
-            Numbers = getNumbers(registration);
-        }
-
-        public Plate(Guid id, string? registration, decimal purchasePrice, decimal salePrice, string? letters, int numbers)
-            : this(id, registration, purchasePrice, salePrice)
-        {
-            Letters = letters;
-            Numbers = numbers;
+            Letters = letters ?? getLetters(registration);
+            Numbers = numbers ?? getNumbers(registration);
+            IsReserved = isReserved;
         }
 
         private static string getLetters(string? registration)
