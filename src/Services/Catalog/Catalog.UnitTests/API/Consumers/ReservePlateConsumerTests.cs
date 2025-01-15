@@ -45,9 +45,9 @@ namespace Catalog.UnitTests.API.Consumers
             _mockLogger.Verify(logger => logger.Log(
                 LogLevel.Information,
                 It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((o, t) => o.ToString() == $"Plate with id {{plateId}} has been reserved."),
+                It.Is<It.IsAnyType>((o, t) => o.ToString() == $"Plate with id {plateId} has been reserved."),
                 null,
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()), Times.Never);
+                It.IsAny<Func<It.IsAnyType, Exception, string>>()), Times.Once);
         }
 
         [Fact]
@@ -68,9 +68,9 @@ namespace Catalog.UnitTests.API.Consumers
             _mockLogger.Verify(logger => logger.Log(
                 LogLevel.Warning,
                 It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((o, t) => o.ToString() == $"Plate with id {{plateId}} is already reserved."),
+                It.Is<It.IsAnyType>((o, t) => o.ToString() == $"Plate with id {plateId} is already reserved."),
                 null,
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()), Times.Never);
+                It.IsAny<Func<It.IsAnyType, Exception, string>>()), Times.Once);
         }
 
         [Fact]
@@ -90,9 +90,9 @@ namespace Catalog.UnitTests.API.Consumers
             _mockLogger.Verify(logger => logger.Log(
                 LogLevel.Warning,
                 It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((o, t) => o.ToString() == $"Plate with id {{plateId}} not found."),
+                It.Is<It.IsAnyType>((o, t) => o.ToString() == $"Plate with id {plateId} not found."),
                 null,
-                It.IsAny<Func<It.IsAnyType, Exception, string>>()), Times.Never);
+                It.IsAny<Func<It.IsAnyType, Exception, string>>()), Times.Once);
         }
     }
 }
