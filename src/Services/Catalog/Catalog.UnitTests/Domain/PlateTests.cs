@@ -11,7 +11,7 @@ namespace Catalog.UnitTests.Domain
         {
             // Arrange
             var id = Guid.NewGuid();
-            var registration = "Plate123";
+            var registration = "Plate 123 Abc";
             var purchasePrice = 1000m;
             var salePrice = 1200m;
 
@@ -24,7 +24,7 @@ namespace Catalog.UnitTests.Domain
             Assert.Equal(purchasePrice, plate.PurchasePrice);
             Assert.Equal(salePrice, plate.SalePrice);
             Assert.Equal(1440, plate.CalculatedSalePrice);
-            Assert.Equal("Plate", plate.Letters);
+            Assert.Equal("PlateAbc", plate.Letters);
             Assert.Equal(123, plate.Numbers);
         }
 
