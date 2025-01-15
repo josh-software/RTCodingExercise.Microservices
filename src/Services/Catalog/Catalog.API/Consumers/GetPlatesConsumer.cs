@@ -25,6 +25,8 @@ namespace Catalog.API.Consumers
             var sort = consumer.Message.Sort.ToString();
             var direction = consumer.Message.Direction.ToString();
 
+            // TODO: Validation, make sure that searchQuery is not too long
+
             // Fetch plates
             var page = await _plateRepository.GetAllPaginatedAsync(limit, offset, searchQuery, sort, direction);
 
